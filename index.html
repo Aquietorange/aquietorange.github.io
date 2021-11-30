@@ -65,12 +65,10 @@
                     <i class="layui-icon layui-icon-spread-left"></i>
                 </li>
 
-                <li class="layui-nav-item layui-hide-xs  {{if  .pathindex }} layui-this {{end}}"><a href="/admin">面板</a>
+                <li class="layui-nav-item layui-hide-xs layui-this"><a href="/admin">面板</a>
                 </li>
-                <li class="layui-nav-item layui-hide-xs  {{if  .pathnodelist }} layui-this {{end}}"><a
-                        href="/admin/nodelist">节点</a></li>
-                <li class="layui-nav-item layui-hide-xs  {{if  .pathother }} layui-this {{end}}"><a
-                        href="/admin/other">Other</a></li>
+                <li class="layui-nav-item layui-hide-xs"><a href="/admin/nodelist">节点</a></li>
+                <li class="layui-nav-item layui-hide-xs "><a href="/admin/other">Other</a></li>
                 <li class="layui-nav-item">
                     <a href="javascript:;">nav groups</a>
                     <dl class="layui-nav-child">
@@ -147,34 +145,19 @@
                     <h2 class="layui-colla-title">入站</h2>
                     <div class="layui-colla-content layui-show">
 
-                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(0)"> 创建一个ws+vmess入站 </a>
-                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(1)"> 创建一个socks5入站 </a>
-                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(3)"> 创建一个HTTP入站 </a>
-                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(2)"> 创建一个透明代理 </a>
-                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(4)"> 创建一个vmess入站 </a>
-                        <table class="layui-table" id="inbounds" lay-filter="inbounds">
-                        </table>
                     </div>
                 </div>
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title">出站</h2>
                     <div class="layui-colla-content layui-show">
-                        <a class="layui-btn layui-btn-xs" onclick="Createoutbound(0)"> 从二维码内容导入一个出站</a>
-                        <table class="layui-table" id="outbounds" lay-filter="outbounds">
-                        </table>
+
                     </div>
                 </div>
                 <div class="layui-colla-item">
                     <h2 class="layui-colla-title">路由</h2>
                     <div class="layui-colla-content layui-show">
 
-                        <a class="layui-btn layui-btn-xs" onclick="editroutings()"> 编辑路由源码 </a>
 
-                        <a class="layui-btn layui-btn-xs" onclick="CreateDomainRou(0)"> 创建指定域名直连路由 </a>
-                        <a class="layui-btn layui-btn-xs" onclick="CreateDomainRou(1)"> 创建指定IP直连路由 </a>
-
-                        <table class="layui-table" id="routing" lay-filter="routing">
-                        </table>
 
                     </div>
                 </div>
