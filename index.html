@@ -1,15 +1,229 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta http-equiv="pragma" content="no-cache">
+    <meta http-equiv="Cache-Control" content="no-cache, must-revalidate">
+    <meta http-equiv="expires" content="0">
+    <title>APP自动化</title>
+    <link rel="stylesheet" href="/layui/css/layui.css?adg">
+    <link rel="stylesheet" href="/layui/jsoneditor.css?Adg">
+    <script src="/layui/layui.js?adgad"></script>
+    <script src="/layui/jquery-2.1.4.min.js?hadg"></script>
+
+    <script src="/layui/jsoneditor.js?adgda"></script>
+
+    <style>
+        div.jsoneditor-select {
+            z-index: 2147483648;
+        }
+
+        #edit {
+            display: none;
+        }
+
+        .layui-table-body {
+            overflow-x: hidden;
+        }
+
+        .layui-body {
+            bottom: unset;
+            overflow-x: hidden;
+        }
+
+        .ui_lineblock {
+            margin-bottom: 5px;
+            max-width: 300px;
+            display: flex;
+            justify-content: space-between;
+
+        }
+
+        #logs {
+            background-color: black;
+            height: 100%;
+            padding: 3px;
+            max-height: 140px;
+            box-sizing: border-box;
+            color: whitesmoke;
+            overflow-y: scroll;
+        }
+    </style>
+
 </head>
 
 <body>
-    hello word
+    <div class="layui-layout layui-layout-admin">
+        <div class="layui-header">
+            <div class="layui-logo layui-hide-xs layui-bg-black">V2man</div>
+            <!-- 头部区域（可配合layui 已有的水平导航） -->
+            <ul class="layui-nav layui-layout-left">
+                <!-- 移动端显示 -->
+                <li class="layui-nav-item layui-show-xs-inline-block layui-hide-sm" lay-header-event="menuLeft">
+                    <i class="layui-icon layui-icon-spread-left"></i>
+                </li>
+
+                <li class="layui-nav-item layui-hide-xs  {{if  .pathindex }} layui-this {{end}}"><a href="/admin">面板</a>
+                </li>
+                <li class="layui-nav-item layui-hide-xs  {{if  .pathnodelist }} layui-this {{end}}"><a
+                        href="/admin/nodelist">节点</a></li>
+                <li class="layui-nav-item layui-hide-xs  {{if  .pathother }} layui-this {{end}}"><a
+                        href="/admin/other">Other</a></li>
+                <li class="layui-nav-item">
+                    <a href="javascript:;">nav groups</a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">menu 11</a></dd>
+                        <dd><a href="">menu 22</a></dd>
+                        <dd><a href="">menu 33</a></dd>
+                    </dl>
+                </li>
+            </ul>
+            <ul class="layui-nav layui-layout-right">
+                <li class="layui-nav-item layui-hide layui-show-md-inline-block">
+                    <a href="javascript:;">
+                        <img src="//tva1.sinaimg.cn/crop.0.0.118.118.180/5db11ff4gw1e77d3nqrv8j203b03cweg.jpg"
+                            class="layui-nav-img">
+                        tester
+                    </a>
+                    <dl class="layui-nav-child">
+                        <dd><a href="">Your Profile</a></dd>
+                        <dd><a href="">Settings</a></dd>
+                        <dd><a href="">Sign out</a></dd>
+                    </dl>
+                </li>
+                <li class="layui-nav-item" lay-header-event="menuRight" lay-unselect>
+                    <a href="javascript:;">
+                        <i class="layui-icon layui-icon-more-vertical"></i>
+                    </a>
+                </li>
+            </ul>
+        </div>
+
+        <div class="layui-body" style="left: 0;">
+            <!-- 内容主体区域 -->
+
+            <div class="layui-row layui-col-space15">
+                <div class="layui-col-md6">
+                    <div class="layui-panel" style="height: 160px;">
+                        <div style="padding: 30px;">
+                            <div class="ui_lineblock">
+                                <div>v2ray 配置文件:</div>
+                                <div id="v2config"></div>
+                            </div>
+                            <div class="ui_lineblock">
+                                <div>v2ray PID:</div>
+                                <div id="v2pid"></div>
+                            </div>
+                            <div class="ui_lineblock">
+                                <div>Nginx PID:</div>
+                                <div id="nginxpid"></div>
+                            </div>
+                            <div class="ui_lineblock">
+                                <div></div>
+                                <a class="layui-btn layui-btn-xs" onclick="editv2config()"> 编辑v2ray config </a>
+                            </div>
+
+                            <div class="ui_lineblock">
+                                <div></div>
+                                <a class="layui-btn layui-btn-xs" onclick="editnginxconfig()"> 编辑nginx config </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-col-md6">
+                    <div class="layui-panel" style="height: 140px;">
+                        <div id="logs">
+
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="layui-collapse" style="clear: both;">
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">入站</h2>
+                    <div class="layui-colla-content layui-show">
+
+                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(0)"> 创建一个ws+vmess入站 </a>
+                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(1)"> 创建一个socks5入站 </a>
+                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(3)"> 创建一个HTTP入站 </a>
+                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(2)"> 创建一个透明代理 </a>
+                        <a class="layui-btn layui-btn-xs" onclick="Createinbound(4)"> 创建一个vmess入站 </a>
+                        <table class="layui-table" id="inbounds" lay-filter="inbounds">
+                        </table>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">出站</h2>
+                    <div class="layui-colla-content layui-show">
+                        <a class="layui-btn layui-btn-xs" onclick="Createoutbound(0)"> 从二维码内容导入一个出站</a>
+                        <table class="layui-table" id="outbounds" lay-filter="outbounds">
+                        </table>
+                    </div>
+                </div>
+                <div class="layui-colla-item">
+                    <h2 class="layui-colla-title">路由</h2>
+                    <div class="layui-colla-content layui-show">
+
+                        <a class="layui-btn layui-btn-xs" onclick="editroutings()"> 编辑路由源码 </a>
+
+                        <a class="layui-btn layui-btn-xs" onclick="CreateDomainRou(0)"> 创建指定域名直连路由 </a>
+                        <a class="layui-btn layui-btn-xs" onclick="CreateDomainRou(1)"> 创建指定IP直连路由 </a>
+
+                        <table class="layui-table" id="routing" lay-filter="routing">
+                        </table>
+
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="layui-footer" style="left: 0;">
+            <!-- 底部固定区域 -->
+            V1.0.0
+        </div>
+
+
+    </div>
+
+
+
+
+
+    <div id="login" style="display: none;margin: 5px 10px;">
+        <form class="layui-form" action="" lay-filter="login">
+            <div class="layui-form-item">
+                <label class="layui-form-label">user</label>
+                <div class="layui-input-block">
+                    <input type="text" name="user" required lay-verify="required" placeholder="请输入user"
+                        autocomplete="off" class="layui-input">
+                </div>
+            </div>
+            <div class="layui-form-item">
+                <label class="layui-form-label">pass</label>
+                <div class="layui-input-block">
+                    <input type="password" name="pass" required lay-verify="required" placeholder="请输入pass"
+                        autocomplete="off" class="layui-input">
+                </div>
+            </div>
+        </form>
+    </div>
+
 </body>
+
+
+
+<script src="/layui/common.js?Gadgade"></script>
+<script>
+    onmessage = (event) => {
+        console.log("got this from the plugin code", event.data.pluginMessage)
+        debugger
+    }
+
+</script>
 
 </html>
